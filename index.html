@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet Pin Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="leaflet.css" />
+
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Click anywhere to drop a pin</h2>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="leaflet.js"></script>
+
+<script>
+  // Initialize map centered on Atlanta
+  const map = L.map('map').setView([33.7490, -84.3880], 10);
+
+  // Add OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  let marker;
+
+  // Add click event
+  map.on('click', function(e) {
+    const { lat, lng } = e.latlng;
+
+    if (marker) {
+      map.removeLayer(marker);
+    }
+
+    marker = L.marker([lat, lng]).addTo(map);
+
+    marker.bindPopup(
+      `Latitude: ${lat.toFixed(5)}<br>Longitude: ${lng.toFixed(5)}`
+    ).openPopup();
+
+    console.log("Selected:", lat, lng);
+  });
+</script>
+
+</body>
+</html>
